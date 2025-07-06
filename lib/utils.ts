@@ -1,3 +1,4 @@
+import { Network } from "@/types/response";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -20,4 +21,8 @@ export function assertValue<T>(
   }
 
   return v;
+}
+
+export function getNetworkInfo(network: Network) {
+  return `${network.name} (${network.symbol})`;
 }
