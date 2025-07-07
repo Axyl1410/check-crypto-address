@@ -1,6 +1,5 @@
 "use client";
 
-import { ModeToggle } from "@/components/common/mode-toggle";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -130,9 +129,6 @@ export default function HomeClient() {
           <p className="text-muted-foreground mx-auto max-w-2xl">
             Analyze wallet addresses for security risks and transaction patterns
           </p>
-          <div className="sr-only">
-            <ModeToggle />
-          </div>
         </div>
 
         {/* Search Section */}

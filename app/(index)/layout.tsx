@@ -1,4 +1,5 @@
 import { Providers } from "@/components/provider";
+import FooterSection from "@/components/sections/footer";
 import Navbar from "@/components/sections/navbar";
 
 export default function Layout({
@@ -10,6 +11,7 @@ export default function Layout({
     <Providers>
       <Navbar />
       <div className="container mx-auto">{children}</div>
+      <FooterSection />
     </Providers>
   );
 }
