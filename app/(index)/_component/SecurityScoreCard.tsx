@@ -18,7 +18,7 @@ export default function SecurityScoreCard({
   getRiskIcon,
 }: SecurityScoreCardProps) {
   return (
-    <Card>
+    <Card className="glassmorphism">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">

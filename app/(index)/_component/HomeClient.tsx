@@ -1,18 +1,19 @@
 "use client";
 
+import { ModeToggle } from "@/components/common/mode-toggle";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ModeToggle } from "@/components/ui/mode-toggle";
 import { useApi } from "@/hooks/use-api";
 import { NetworksResponse } from "@/types";
+import { isAddress } from "ethers";
 import {
   Activity,
   AlertCircleIcon,
   AlertTriangle,
   CheckCircle,
-  Search,
+  Wallet,
   XCircle,
 } from "lucide-react";
 import React from "react";
@@ -46,10 +47,12 @@ export default function HomeClient() {
   const { data, isLoading, isError, error, isFetching } = queryResult!;
 
   const handleFetchAddress = () => {
-    if (address.trim()) {
+    if (address.trim() && isAddress(address)) {
       setCurrentPage(1);
       setQueryKey(["address", address.trim()]);
       if (queryResult) queryResult.refetch();
+    } else {
+      toast.error("Wallet address syntax looks invalid");
     }
   };
 
@@ -102,22 +105,17 @@ export default function HomeClient() {
     : 0;
 
   function getPaginationRange(current: number, total: number) {
-    const delta = 1;
-    const range: (number | string)[] = [];
-    const left = Math.max(2, current - delta);
-    const right = Math.min(total - 1, current + delta);
-
-    range.push(1);
-    for (let i = left; i <= right; i++) {
-      range.push(i);
+    if (total <= 3) {
+      return Array.from({ length: total }, (_, i) => i + 1);
     }
-    if (total > 1) {
-      range.push(total);
+    if (current === 1) {
+      return [1, 2, total];
     }
-    return range;
+    if (current === total) {
+      return [1, total - 1, total];
+    }
+    return [1, current, total];
   }
-
-  console.log(data);
 
   return (
     <div className="bg-background min-h-screen">
@@ -138,11 +136,11 @@ export default function HomeClient() {
         </div>
 
         {/* Search Section */}
-        <Card className="mb-8">
+        <Card className="glassmorphism mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
-              Enter Wallet Address
+              <Wallet className="h-5 w-5" />
+              Check Wallet
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -176,22 +174,27 @@ export default function HomeClient() {
           </CardContent>
         </Card>
 
+        <p className="text-muted-foreground mb-6 text-center text-sm">
+          Disclaimer: This tool will try to validate the syntax of your address
+          and is unable to actually confirm if specific address exists or
+          belongs to someone. Always double check that you are sending/receiving
+          funds to an existing address.
+        </p>
+
         {/* Error State */}
-        {(isError ||
-          !data?.scamDetails ||
-          !data.networks ||
-          !data.securityScore) && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertCircleIcon />
-            <AlertTitle>Invalid Wallet Address</AlertTitle>
-            <AlertDescription>
-              <p>
-                Wallet address syntax looks invalid. Please check the address
-                and try again.
-              </p>
-            </AlertDescription>
-          </Alert>
-        )}
+        {isError &&
+          (!data?.scamDetails || !data.networks || !data.securityScore) && (
+            <Alert variant="destructive" className="glassmorphism mb-6">
+              <AlertCircleIcon />
+              <AlertTitle>Invalid Wallet Address</AlertTitle>
+              <AlertDescription>
+                <p>
+                  Wallet address syntax looks invalid. Please check the address
+                  and try again.
+                </p>
+              </AlertDescription>
+            </Alert>
+          )}
 
         {/* Results Section */}
         <div className="space-y-6">
@@ -245,6 +248,45 @@ export default function HomeClient() {
           ) : (
             <NetworksSkeleton />
           )}
+          <h1 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+            About Crypto Address Validation
+          </h1>
+          <div className="flex flex-col gap-2">
+            <p className="leading-7 [&:not(:first-child)]:mt-6">
+              Checking a cryptocurrency wallet address is an essential step in
+              the process of sending and receiving cryptocurrency transactions.
+              This process involves verifying that the address is valid and
+              ensuring that it belongs to the correct recipient.
+            </p>
+            <p className="leading-7 [&:not(:first-child)]:mt-6">
+              To validate a cryptocurrency wallet address, there are several
+              online tools and services available. These tools typically require
+              users to input the address they wish to verify and then perform a
+              series of checks to confirm its validity.
+            </p>
+            <p className="leading-7 [&:not(:first-child)]:mt-6">
+              One common method for validating a wallet address is to check its
+              format. Each cryptocurrency network has a unique address format,
+              and addresses that don't conform to the correct format will be
+              considered invalid.
+            </p>
+            <p className="leading-7 [&:not(:first-child)]:mt-6">
+              Another important aspect of validating a wallet address is to
+              check its transaction history. This step can help users confirm
+              that the address belongs to the intended recipient and has a
+              legitimate transaction history. Checking the balance of the
+              address is also important, as it ensures that the recipient has
+              sufficient funds to receive the transaction.
+            </p>
+            <p className="leading-7 [&:not(:first-child)]:mt-6">
+              Using a trusted and reliable tool to validate wallet addresses can
+              help reduce the risk of errors and fraud when sending or receiving
+              cryptocurrency. By verifying the accuracy of a wallet address
+              before sending or receiving funds, users can ensure that their
+              transactions are secure and that their funds are being sent to the
+              correct destination.
+            </p>
+          </div>
         </div>
       </div>
     </div>

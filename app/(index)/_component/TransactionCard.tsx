@@ -22,7 +22,7 @@ export default function TransactionCard({
 }: TransactionCardProps) {
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-      <Card>
+      <Card className="glassmorphism">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
@@ -69,7 +69,7 @@ export default function TransactionCard({
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="glassmorphism">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5" />

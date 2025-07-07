@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { Button } from "./button";
+import { Button } from "../ui/button";
 
 interface ModeToggleProps {
   align?: "start" | "end" | "center";

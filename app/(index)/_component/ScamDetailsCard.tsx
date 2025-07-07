@@ -13,7 +13,7 @@ export default function ScamDetailsCard({
   getRiskColor,
 }: ScamDetailsCardProps) {
   return (
-    <Card>
+    <Card className="glassmorphism">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <AlertTriangle className="h-5 w-5" />
