@@ -5,5 +5,9 @@ export default function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <Providers>{children}</Providers>;
+  return (
+    <Providers>
+      <div className="container mx-auto">{children}</div>
+    </Providers>
+  );
 }

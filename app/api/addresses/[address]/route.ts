@@ -1,12 +1,14 @@
 import { ServerAxiosConfig } from "@/constants/axios-config";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { address: string } },
+  { params }: { params: Promise<{ address: string }> },
 ) {
   try {
-    const address = params.address;
+    const { address } = await params;
     const response = await fetch(
       `${ServerAxiosConfig.baseURL}/addresses/${address}`,
       {

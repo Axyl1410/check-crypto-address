@@ -39,6 +39,12 @@ export function ModeToggle({ align = "end" }: ModeToggleProps) {
         >
           Dark
         </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => setTheme("system")}
+          className="cursor-pointer"
+        >
+          System
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

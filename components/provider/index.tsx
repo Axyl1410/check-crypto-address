@@ -6,7 +6,7 @@ import { ThemeProvider } from "./theme-provider";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <QueryClient>
-      <ThemeProvider attribute="class" defaultTheme="light">
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <Toaster closeButton position="bottom-right" />
         {children}
       </ThemeProvider>
