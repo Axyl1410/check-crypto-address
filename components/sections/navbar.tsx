@@ -84,20 +84,20 @@ export default function Navbar({
                   variant={action.variant || "default"}
                   asChild
                 >
-                  <a href={action.href}>
+                  <Link href={action.href}>
                     {action.icon}
                     {action.text}
                     {action.iconRight}
-                  </a>
+                  </Link>
                 </Button>
               ) : (
-                <a
+                <Link
                   key={index}
                   href={action.href}
                   className="hidden text-sm md:block"
                 >
                   {action.text}
-                </a>
+                </Link>
               ),
             )}
             <Sheet>
@@ -113,20 +113,20 @@ export default function Navbar({
               </SheetTrigger>
               <SheetContent side="right">
                 <nav className="grid gap-6 text-lg font-medium">
-                  <a
+                  <Link
                     href={homeUrl}
                     className="flex items-center gap-2 text-xl font-bold"
                   >
                     <span>Axyl</span>
-                  </a>
+                  </Link>
                   {mobileLinks.map((link, index) => (
-                    <a
+                    <Link
                       key={index}
                       href={link.href}
                       className="text-muted-foreground hover:text-foreground"
                     >
                       {link.text}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </SheetContent>

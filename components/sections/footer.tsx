@@ -1,13 +1,18 @@
-import { ReactNode } from "react";
+"use client";
 
-import { cn } from "@/lib/utils";
+import { cn, formatAddress } from "@/lib/utils";
+import { TokenIcon } from "@web3icons/react";
+import { ReactNode } from "react";
+import { CopyButton } from "../common/copy-button";
+import { Card, CardContent } from "../ui/card";
 import {
   Footer,
-  FooterContent,
-  FooterColumn,
   FooterBottom,
+  FooterColumn,
+  FooterContent,
 } from "../ui/footer";
 import { ModeToggle } from "../ui/mode-toggle";
+import { Separator } from "../ui/separator";
 
 interface FooterLink {
   text: string;
@@ -67,19 +72,54 @@ export default function FooterSection({
             </FooterColumn>
             {columns.map((column, index) => (
               <FooterColumn key={index}>
-                <h3 className="text-md pt-1 font-semibold">{column.title}</h3>
+                <h3 className="pt-1 text-sm font-semibold uppercase">
+                  {column.title}
+                </h3>
                 {column.links.map((link, linkIndex) => (
-                  <a
-                    key={linkIndex}
-                    href={link.href}
-                    className="text-muted-foreground text-sm"
-                  >
-                    {link.text}
-                  </a>
+                  <p key={linkIndex}>
+                    <a
+                      href={link.href}
+                      className="text-muted-foreground text-sm"
+                    >
+                      {link.text}
+                    </a>
+                  </p>
                 ))}
               </FooterColumn>
             ))}
           </FooterContent>
+          <Separator className="mt-8" />
+          <div className="my-4 flex flex-col gap-2">
+            <h3 className="text-xs font-bold uppercase">Support Us</h3>
+            <Card className="hover:bg-muted !py-2 transition-colors">
+              <CardContent className="!px-2">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <TokenIcon
+                      symbol={"eth"}
+                      variant="branded"
+                      size="24"
+                      allowReorder="yes"
+                    />
+                    <div className="flex flex-col gap-1">
+                      <p className="text-sm">Ethereum</p>
+                      <p className="text-muted-foreground hidden text-xs sm:block">
+                        0x2349Db8bdf85bd80bFc4afb715a69fb4C6463B96
+                      </p>
+                      <p className="text-muted-foreground text-xs sm:hidden">
+                        {formatAddress(
+                          "0x2349Db8bdf85bd80bFc4afb715a69fb4C6463B96",
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <CopyButton textToCopy="0x2349Db8bdf85bd80bFc4afb715a69fb4C6463B96" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
           <FooterBottom>
             <div>{copyright}</div>
             <div className="flex items-center gap-4">
