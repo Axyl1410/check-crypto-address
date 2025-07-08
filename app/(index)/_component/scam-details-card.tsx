@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScamDetails } from "@/types/response";
+import { ScamDetails } from "@/types/validate";
 import { AlertCircle, AlertTriangle, Clock } from "lucide-react";
 
 interface ScamDetailsCardProps {

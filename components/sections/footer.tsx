@@ -114,7 +114,10 @@ export default function FooterSection({
                     </div>
                   </div>
                   <div>
-                    <CopyButton textToCopy="0x2349Db8bdf85bd80bFc4afb715a69fb4C6463B96" />
+                    <CopyButton
+                      textToCopy="0x2349Db8bdf85bd80bFc4afb715a69fb4C6463B96"
+                      successMessage={{}}
+                    />
                   </div>
                 </div>
               </CardContent>

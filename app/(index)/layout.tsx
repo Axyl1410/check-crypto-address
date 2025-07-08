@@ -10,7 +10,9 @@ export default function Layout({
   return (
     <Providers>
       <Navbar />
-      <div className="container mx-auto">{children}</div>
+      <div className="px-4">
+        <div className="container mx-auto py-8">{children}</div>
+      </div>
       <FooterSection />
     </Providers>
   );

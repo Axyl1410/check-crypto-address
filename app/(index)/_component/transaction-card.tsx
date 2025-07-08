@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SecurityScore } from "@/types/response";
+import { SecurityScore } from "@/types/validate";
 import {
   AlertCircle,
   AlertTriangle,

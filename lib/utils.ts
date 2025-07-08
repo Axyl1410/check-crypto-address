@@ -1,4 +1,4 @@
-import { Network } from "@/types/response";
+import { Network } from "@/types/validate";
 import { clsx, type ClassValue } from "clsx";
 import { AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 import React from "react";

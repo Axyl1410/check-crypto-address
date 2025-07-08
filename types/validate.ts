@@ -26,7 +26,7 @@ export interface SecurityScore {
   tokenTransactions: number;
 }
 
-export interface NetworksResponse {
+export interface ValidateResponse {
   networks: Network[];
   scamDetails: ScamDetails;
   securityScore: SecurityScore;

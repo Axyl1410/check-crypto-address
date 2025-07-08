@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Network as NetworkType } from "@/types/response";
+import { Network as NetworkType } from "@/types/validate";
 import { TokenIcon } from "@web3icons/react";
 import { Globe } from "lucide-react";
 import Pagination from "../../../components/common/pagination";

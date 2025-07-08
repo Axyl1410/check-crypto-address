@@ -2,7 +2,7 @@ import HomeClient from "./_component/home-client";
 
 export default function Page() {
   return (
-    <div className="container mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8">
+    <div className="flex w-full flex-col justify-center gap-4">
       <HomeClient />
       <h1 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
         About Crypto Address Validation

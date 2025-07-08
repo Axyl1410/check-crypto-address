@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useApi } from "@/hooks/use-api";
-import { NetworksResponse } from "@/types";
+import { ValidateResponse } from "@/types";
 import { isAddress } from "ethers";
 import {
   Activity,
@@ -31,10 +31,9 @@ import TransactionCard from "./transaction-card";
 export default function HomeClient() {
   const [address, setAddress] = React.useState("");
   const [queryKey, setQueryKey] = React.useState(["address", ""]);
-  const [currentPage, setCurrentPage] = React.useState(1);
   const networksPerPage = 8;
 
-  const { queryResult } = useApi<NetworksResponse>({
+  const { queryResult } = useApi<ValidateResponse>({
     url: `/api/addresses/${address}`,
     queryKey: queryKey,
     method: "GET",
@@ -47,7 +46,6 @@ export default function HomeClient() {
 
   const handleFetchAddress = () => {
     if (address.trim() && isAddress(address)) {
-      setCurrentPage(1);
       setQueryKey(["address", address.trim()]);
       if (queryResult) queryResult.refetch();
     } else {
@@ -98,23 +96,6 @@ export default function HomeClient() {
       return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
     return <CheckCircle className="h-5 w-5 text-green-600" />;
   };
-
-  const totalPages = data?.networks
-    ? Math.ceil(data.networks.length / networksPerPage)
-    : 0;
-
-  function getPaginationRange(current: number, total: number) {
-    if (total <= 3) {
-      return Array.from({ length: total }, (_, i) => i + 1);
-    }
-    if (current === 1) {
-      return [1, 2, total];
-    }
-    if (current === total) {
-      return [1, total - 1, total];
-    }
-    return [1, current, total];
-  }
 
   return (
     <div className="bg-background min-h-screen">

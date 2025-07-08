@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { SecurityScore } from "@/types/response";
+import { SecurityScore } from "@/types/validate";
 import { BarChart3, Shield, Users } from "lucide-react";
 import React from "react";
 
