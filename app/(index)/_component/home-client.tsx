@@ -102,7 +102,7 @@ export default function HomeClient() {
       {/* Header */}
       <div className="mb-8 text-center">
         <div className="mb-4 flex items-center justify-center gap-3">
-          <h1 className="scroll-m-20 gap-2 text-center text-4xl font-extrabold tracking-tight text-balance">
+          <h1 className="scroll-m-20 gap-2 text-center text-3xl font-extrabold tracking-tight text-balance lg:text-4xl">
             Wallet Security Checker
           </h1>
         </div>

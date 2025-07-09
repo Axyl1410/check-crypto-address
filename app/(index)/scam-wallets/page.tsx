@@ -1,16 +1,41 @@
+"use client";
+
+import Pagination from "@/components/common/pagination";
+import { TooltipWrapper } from "@/components/common/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { TextShimmer } from "@/components/ui/text-shimmer";
+import { useApi } from "@/hooks/use-api";
+import { ScamWalletsResponse } from "@/types";
+import { TokenIcon } from "@web3icons/react";
 import { AlertTriangle, ListChecksIcon } from "lucide-react";
+import { useState } from "react";
 
 export default function Page() {
+  const [page, setPage] = useState(1);
+  const { queryResult } = useApi<ScamWalletsResponse>({
+    url: "/api/scam-wallets",
+    queryKey: ["scam-wallets", page],
+    method: "GET",
+    params: {
+      page: page.toString(),
+      search: "",
+    },
+  });
+
+  const { data, isLoading } = queryResult!;
+
+  console.log(data);
+  console.log(page);
+
   return (
     <div className="flex flex-col gap-4">
       <Card className="overflow-hidden py-0">
         <CardContent className="px-0">
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 lg:flex-row">
             <div className="flex flex-1 flex-col gap-2 p-6">
-              <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight text-balance">
+              <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight text-balance lg:text-4xl">
                 Scam <span className="text-primary/85">Crypto</span> Wallets
               </h1>
               <h2 className="text-primary/85 scroll-m-20 text-2xl font-semibold tracking-tight">
@@ -27,13 +52,19 @@ export default function Page() {
                 <Button>Search</Button>
               </div>
             </div>
-            <div className="flex flex-col gap-2 rounded-tl border-l-2 bg-linear-to-tl from-white to-blue-100 p-6 dark:from-slate-900 dark:to-slate-800">
+            <div className="flex flex-col gap-2 rounded-tl bg-linear-to-tl from-white to-blue-100 p-6 lg:border-l-2 dark:from-slate-900 dark:to-slate-800">
               <div className="flex gap-2">
                 <div className="bg-muted rounded border p-4">
                   <AlertTriangle size={24} />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <p className="font-bold text-red-500">---</p>
+                  <p className="font-bold">
+                    {isLoading ? (
+                      <TextShimmer>---</TextShimmer>
+                    ) : (
+                      data?.page.count || "Error"
+                    )}
+                  </p>
                   <p className="text-sm">Total Reports</p>
                 </div>
               </div>
@@ -49,12 +80,75 @@ export default function Page() {
                 <p className="max-w-xs text-sm">
                   Help the community by reporting suspicious wallet addresses
                 </p>
-                <Button>Report Wallet</Button>
+                <TooltipWrapper label="Coming Soon">
+                  <Button disabled className="w-full">
+                    Report Wallet
+                  </Button>
+                </TooltipWrapper>
               </div>
             </div>
           </div>
         </CardContent>
       </Card>
+      {data?.data && (
+        <Pagination
+          data={data.data}
+          itemsPerPage={10}
+          totalPages={data?.page.count ? Math.ceil(data.page.count / 10) : 1}
+          currentPage={page}
+          onPageChange={(newPage) => {
+            setPage(newPage);
+          }}
+          render={(pageData) => (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {pageData.map((wallet) => (
+                <Card key={wallet.id} className="overflow-hidden">
+                  <CardContent className="p-6">
+                    <div className="mb-4 flex items-start justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="rounded-full bg-red-100 p-2 dark:bg-red-900/20">
+                          <TokenIcon
+                            symbol={wallet.walletNetwork.symbol}
+                            variant="branded"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground text-sm font-medium">
+                            {wallet.walletNetwork.symbol.toUpperCase()}
+                          </p>
+                          <p className="text-muted-foreground text-xs">
+                            {wallet.reportCount} reports
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <div>
+                        <p className="mb-1 text-sm font-medium">
+                          Wallet Address
+                        </p>
+                        <p className="bg-muted rounded p-2 font-mono text-xs break-all">
+                          {wallet.address}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">
+                          Last Reported:
+                        </span>
+                        <span>
+                          {new Date(wallet.lastReported).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        />
+      )}
     </div>
   );
 }

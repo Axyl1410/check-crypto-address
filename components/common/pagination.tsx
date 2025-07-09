@@ -12,20 +12,42 @@ interface PaginationProps<T> {
   data: T[];
   itemsPerPage: number;
   render: (pageData: T[]) => React.ReactNode;
+  totalPages?: number;
+  currentPage?: number;
+  onPageChange?: (page: number) => void;
 }
 
 export default function Pagination<T>({
   data,
   itemsPerPage,
   render,
+  totalPages: externalTotalPages,
+  currentPage: externalCurrentPage,
+  onPageChange,
 }: PaginationProps<T>) {
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  const [internalCurrentPage, setInternalCurrentPage] = React.useState(1);
+
+  const currentPage = externalCurrentPage ?? internalCurrentPage;
+
+  const calculatedTotalPages = Math.ceil(data.length / itemsPerPage);
+  const totalPages = externalTotalPages ?? calculatedTotalPages;
 
   const getCurrentPageData = () => {
+    if (externalTotalPages !== undefined) {
+      return data;
+    }
+
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     return data.slice(start, end);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    if (onPageChange) {
+      onPageChange(newPage);
+    } else {
+      setInternalCurrentPage(newPage);
+    }
   };
 
   function getPaginationRange(current: number, total: number) {
@@ -49,7 +71,7 @@ export default function Pagination<T>({
           <PaginationContent>
             <PaginationItem>
               <PaginationPrevious
-                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
                 className={
                   currentPage === 1
                     ? "pointer-events-none opacity-50"
@@ -62,7 +84,7 @@ export default function Pagination<T>({
                 <PaginationItem key={page}>
                   <PaginationLink
                     isActive={currentPage === page}
-                    onClick={() => setCurrentPage(page)}
+                    onClick={() => handlePageChange(page)}
                     className="cursor-pointer"
                   >
                     {page}
@@ -79,7 +101,7 @@ export default function Pagination<T>({
             <PaginationItem>
               <PaginationNext
                 onClick={() =>
-                  setCurrentPage(Math.min(totalPages, currentPage + 1))
+                  handlePageChange(Math.min(totalPages, currentPage + 1))
                 }
                 className={
                   currentPage === totalPages
