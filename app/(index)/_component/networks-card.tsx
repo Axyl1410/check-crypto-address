@@ -28,13 +28,14 @@ export default function NetworksCard({
               {pageNetworks.map((network) => (
                 <div
                   key={network.id}
-                  className="hover:bg-accent hover:border-accent-foreground/20 group flex cursor-pointer flex-col items-center rounded-lg border p-4 transition-colors"
+                  className="hover:bg-accent hover:border-accent-foreground/20 group flex cursor-pointer items-center gap-2 rounded-lg border p-4 transition-colors"
                 >
                   <div className="h-6 w-6">
                     <TokenIcon
                       symbol={network.symbol.toLowerCase()}
-                      variant="branded"
-                      size="24"
+                      variant="background"
+                      size={24}
+                      className="rounded-full"
                       allowReorder="yes"
                     />
                   </div>

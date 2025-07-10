@@ -64,7 +64,7 @@ export default function Pagination<T>({
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {render(getCurrentPageData())}
       {totalPages > 1 && (
         <ShadcnPagination>
@@ -79,25 +79,17 @@ export default function Pagination<T>({
                 }
               />
             </PaginationItem>
-            {getPaginationRange(currentPage, totalPages).map((page, idx) =>
-              typeof page === "number" ? (
-                <PaginationItem key={page}>
-                  <PaginationLink
-                    isActive={currentPage === page}
-                    onClick={() => handlePageChange(page)}
-                    className="cursor-pointer"
-                  >
-                    {page}
-                  </PaginationLink>
-                </PaginationItem>
-              ) : (
-                <PaginationItem key={`ellipsis-${idx}`}>
-                  <span className="text-muted-foreground px-2 select-none">
-                    ...
-                  </span>
-                </PaginationItem>
-              ),
-            )}
+            {getPaginationRange(currentPage, totalPages).map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  isActive={currentPage === page}
+                  onClick={() => handlePageChange(page)}
+                  className="cursor-pointer"
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
             <PaginationItem>
               <PaginationNext
                 onClick={() =>

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useApi } from "@/hooks/use-api";
 import { ValidateResponse } from "@/types";
+import { validate } from "bitcoin-address-validation";
 import { isAddress } from "ethers";
 import {
   Activity,
@@ -45,7 +46,7 @@ export default function HomeClient() {
   const { data, isLoading, isError, error, isFetching } = queryResult!;
 
   const handleFetchAddress = () => {
-    if (address.trim() && isAddress(address)) {
+    if (address.trim() && (isAddress(address) || validate(address))) {
       setQueryKey(["address", address.trim()]);
       if (queryResult) queryResult.refetch();
     } else {

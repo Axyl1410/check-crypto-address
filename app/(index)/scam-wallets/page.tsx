@@ -1,5 +1,6 @@
 "use client";
 
+import { CopyButton } from "@/components/common/copy-button";
 import Pagination from "@/components/common/pagination";
 import { TooltipWrapper } from "@/components/common/tooltip-wrapper";
 import { Button } from "@/components/ui/button";
@@ -9,8 +10,11 @@ import { TextShimmer } from "@/components/ui/text-shimmer";
 import { useApi } from "@/hooks/use-api";
 import { ScamWalletsResponse } from "@/types";
 import { TokenIcon } from "@web3icons/react";
+import { formatDistance } from "date-fns";
 import { AlertTriangle, ListChecksIcon } from "lucide-react";
 import { useState } from "react";
+import Network from "./_component/network";
+import { ScamWalletsGridSkeleton } from "./_component/skeleton-cards";
 
 export default function Page() {
   const [page, setPage] = useState(1);
@@ -26,11 +30,8 @@ export default function Page() {
 
   const { data, isLoading } = queryResult!;
 
-  console.log(data);
-  console.log(page);
-
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <Card className="overflow-hidden py-0">
         <CardContent className="px-0">
           <div className="flex flex-col gap-2 lg:flex-row">
@@ -90,65 +91,90 @@ export default function Page() {
           </div>
         </CardContent>
       </Card>
-      {data?.data && (
-        <Pagination
-          data={data.data}
-          itemsPerPage={10}
-          totalPages={data?.page.count ? Math.ceil(data.page.count / 10) : 1}
-          currentPage={page}
-          onPageChange={(newPage) => {
-            setPage(newPage);
-          }}
-          render={(pageData) => (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {pageData.map((wallet) => (
-                <Card key={wallet.id} className="overflow-hidden">
-                  <CardContent className="p-6">
-                    <div className="mb-4 flex items-start justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="rounded-full bg-red-100 p-2 dark:bg-red-900/20">
-                          <TokenIcon
-                            symbol={wallet.walletNetwork.symbol}
-                            variant="branded"
-                          />
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground text-sm font-medium">
-                            {wallet.walletNetwork.symbol.toUpperCase()}
-                          </p>
-                          <p className="text-muted-foreground text-xs">
-                            {wallet.reportCount} reports
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+      <div className="gap-8 lg:flex">
+        <div className="mb-2 flex-1 lg:mb-0">
+          {isLoading ? (
+            <ScamWalletsGridSkeleton />
+          ) : (
+            data?.data && (
+              <Pagination
+                data={data.data}
+                itemsPerPage={10}
+                totalPages={
+                  data?.page.count ? Math.ceil(data.page.count / 10) : 1
+                }
+                currentPage={page}
+                onPageChange={(newPage) => {
+                  setPage(newPage);
+                }}
+                render={(pageData) => (
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {pageData.map((wallet) => (
+                      <Card key={wallet.id} className="overflow-hidden">
+                        <CardContent>
+                          <div className="mb-4 flex items-start justify-between">
+                            <div className="flex items-center gap-2">
+                              <TokenIcon
+                                symbol={wallet.walletNetwork.symbol}
+                                variant="background"
+                                className="rounded-full"
+                                size={32}
+                              />
+                              <div>
+                                <p className="text-muted-foreground text-sm font-medium">
+                                  {wallet.walletNetwork.symbol.toUpperCase()}
+                                </p>
+                                <p className="text-muted-foreground text-xs">
+                                  {wallet.reportCount} reports
+                                </p>
+                              </div>
+                            </div>
+                          </div>
 
-                    <div className="space-y-3">
-                      <div>
-                        <p className="mb-1 text-sm font-medium">
-                          Wallet Address
-                        </p>
-                        <p className="bg-muted rounded p-2 font-mono text-xs break-all">
-                          {wallet.address}
-                        </p>
-                      </div>
+                          <div className="space-y-3">
+                            <div>
+                              <div className="mb-1 flex items-center justify-between">
+                                <p className="text-sm font-medium">
+                                  Wallet Address
+                                </p>
+                                <CopyButton
+                                  textToCopy={wallet.address}
+                                  successMessage={{
+                                    title: "Address Copied!",
+                                    description:
+                                      "Wallet address copied to clipboard",
+                                  }}
+                                />
+                              </div>
+                              <p className="bg-muted rounded p-2 font-mono text-xs break-all">
+                                {wallet.address}
+                              </p>
+                            </div>
 
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">
-                          Last Reported:
-                        </span>
-                        <span>
-                          {new Date(wallet.lastReported).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">
+                                Last Reported:
+                              </span>
+                              <span>
+                                {formatDistance(
+                                  new Date(wallet.lastReported),
+                                  new Date(),
+                                  { addSuffix: true },
+                                )}
+                              </span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              />
+            )
           )}
-        />
-      )}
+        </div>
+        <Network />
+      </div>
     </div>
   );
 }

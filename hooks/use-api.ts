@@ -15,7 +15,7 @@ type UseApiOptions<TData, TError, TVariables> = {
   queryKey: QueryKey;
   method?: Method;
   data?: TVariables;
-  params?: Record<string, any>; // Thêm dòng này để truyền params
+  params?: Record<string, any>;
   queryOptions?: Omit<UseQueryOptions<TData, TError>, "queryKey" | "queryFn">;
   mutationOptions?: Omit<
     UseMutationOptions<TData, TError, TVariables>,
