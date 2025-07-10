@@ -16,7 +16,7 @@ import {
   Wallet,
   XCircle,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { toast } from "sonner";
 import NetworksCard from "./networks-card";
 import ScamDetailsCard from "./scam-details-card";
@@ -47,7 +47,7 @@ export default function HomeClient() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     let toastId: string | number;
     if (isFetching && !isLoading) {
       toastId = toast.loading("Updating data...");
@@ -59,7 +59,7 @@ export default function HomeClient() {
     };
   }, [isFetching, isLoading]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isError && error) {
       toast.error(`Error: ${(error as Error).message}`);
     }
@@ -78,18 +78,18 @@ export default function HomeClient() {
     }
   };
 
-  const getRiskScoreColor = (score: number) => {
-    if (score >= 80) return "text-red-600";
-    if (score >= 60) return "text-yellow-600";
-    return "text-green-600";
-  };
+  // const getRiskScoreColor = (score: number) => {
+  //   if (score >= 80) return "text-red-600";
+  //   if (score >= 60) return "text-yellow-600";
+  //   return "text-green-600";
+  // };
 
-  const getRiskIcon = (score: number) => {
-    if (score >= 80) return <XCircle className="h-5 w-5 text-red-600" />;
-    if (score >= 60)
-      return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
-    return <CheckCircle className="h-5 w-5 text-green-600" />;
-  };
+  // const getRiskIcon = (score: number) => {
+  //   if (score >= 80) return <XCircle className="h-5 w-5 text-red-600" />;
+  //   if (score >= 60)
+  //     return <AlertTriangle className="h-5 w-5 text-yellow-600" />;
+  //   return <CheckCircle className="h-5 w-5 text-green-600" />;
+  // };
 
   return (
     <div className="bg-background min-h-screen">

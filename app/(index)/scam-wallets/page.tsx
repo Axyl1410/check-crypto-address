@@ -13,7 +13,8 @@ import { TokenIcon } from "@web3icons/react";
 import { formatDistance } from "date-fns";
 import { AlertTriangle, ExternalLink, ListChecksIcon } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import Network from "./_component/network";
 import { ScamWalletsGridSkeleton } from "./_component/skeleton-cards";
 
@@ -29,7 +30,25 @@ export default function Page() {
     },
   });
 
-  const { data, isLoading } = queryResult!;
+  const { data, isLoading, isError, error, isFetching } = queryResult!;
+
+  useEffect(() => {
+    let toastId: string | number;
+    if (isFetching && !isLoading) {
+      toastId = toast.loading("Updating data...");
+    }
+    return () => {
+      if (toastId) {
+        toast.dismiss(toastId);
+      }
+    };
+  }, [isFetching, isLoading]);
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(`Error: ${(error as Error).message}`);
+    }
+  }, [isError, error]);
 
   return (
     <div className="flex flex-col gap-8">

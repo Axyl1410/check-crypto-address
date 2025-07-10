@@ -10,6 +10,8 @@ import { TokenIcon } from "@web3icons/react";
 import { formatDistance } from "date-fns";
 import { AlertTriangle, ArrowLeft, Calendar, Users } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 function ScamWalletDetailSkeleton() {
   return (
@@ -121,7 +123,25 @@ export default function ScamWalletDetailPage() {
     method: "GET",
   });
 
-  const { data, isLoading } = queryResult!;
+  const { data, isLoading, isError, error, isFetching } = queryResult!;
+
+  useEffect(() => {
+    let toastId: string | number;
+    if (isFetching && !isLoading) {
+      toastId = toast.loading("Updating data...");
+    }
+    return () => {
+      if (toastId) {
+        toast.dismiss(toastId);
+      }
+    };
+  }, [isFetching, isLoading]);
+
+  useEffect(() => {
+    if (isError && error) {
+      toast.error(`Error: ${(error as Error).message}`);
+    }
+  }, [isError, error]);
 
   const wallet: ScamReport | undefined = Array.isArray(data?.data)
     ? data?.data[0]
