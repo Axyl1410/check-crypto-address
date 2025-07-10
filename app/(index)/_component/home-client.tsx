@@ -8,18 +8,12 @@ import { useApi } from "@/hooks/use-api";
 import { ValidateResponse } from "@/types/validate";
 import { validate } from "bitcoin-address-validation";
 import { isAddress } from "ethers";
-import {
-  Activity,
-  AlertCircleIcon,
-  AlertTriangle,
-  CheckCircle,
-  Wallet,
-  XCircle,
-} from "lucide-react";
+import { Activity, AlertCircleIcon, Wallet } from "lucide-react";
 import React, { useEffect } from "react";
 import { toast } from "sonner";
 import NetworksCard from "./networks-card";
 import ScamDetailsCard from "./scam-details-card";
+import RiskScorePie from "./score-chart";
 import { NetworksSkeleton, ScamDetailsSkeleton } from "./skeletons-cards";
 
 export default function HomeClient() {
@@ -37,6 +31,8 @@ export default function HomeClient() {
   });
 
   const { data, isLoading, isError, error, isFetching } = queryResult!;
+
+  console.log(data);
 
   const handleFetchAddress = () => {
     if (address.trim() && (isAddress(address) || validate(address))) {
@@ -77,12 +73,6 @@ export default function HomeClient() {
         return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
-
-  // const getRiskScoreColor = (score: number) => {
-  //   if (score >= 80) return "text-red-600";
-  //   if (score >= 60) return "text-yellow-600";
-  //   return "text-green-600";
-  // };
 
   // const getRiskIcon = (score: number) => {
   //   if (score >= 80) return <XCircle className="h-5 w-5 text-red-600" />;
@@ -167,38 +157,28 @@ export default function HomeClient() {
         )}
 
       <div className="space-y-6">
-        {/* {isLoading || isError ? (
-          <SecurityScoreSkeleton />
-        ) : data?.securityScore ? (
-          <SecurityScoreCard
-            securityScore={data.securityScore}
-            getRiskColor={getRiskColor}
-            getRiskScoreColor={getRiskScoreColor}
-            getRiskIcon={getRiskIcon}
-          />
-        ) : (
-          <SecurityScoreSkeleton />
-        )} */}
+        <div className="flex flex-col gap-4 md:flex-row">
+          <div className="flex flex-1/3 justify-center">
+            <RiskScorePie
+              score={data?.securityScore.riskScore || 0}
+              riskLevel={data?.securityScore.riskLevel || "N/A"}
+            />
+          </div>
 
-        {/* {isLoading || isError ? (
-          <TransactionSkeleton />
-        ) : data?.securityScore ? (
-          <TransactionCard securityScore={data.securityScore} />
-        ) : (
-          <TransactionSkeleton />
-        )} */}
-
-        {/* Scam Details */}
-        {isLoading || isError ? (
-          <ScamDetailsSkeleton />
-        ) : data?.scamDetails ? (
-          <ScamDetailsCard
-            scamDetails={data.scamDetails}
-            getRiskColor={getRiskColor}
-          />
-        ) : (
-          <ScamDetailsSkeleton />
-        )}
+          <div className="flex-2/3">
+            {/* Scam Details */}
+            {isLoading || isError ? (
+              <ScamDetailsSkeleton />
+            ) : data?.scamDetails ? (
+              <ScamDetailsCard
+                scamDetails={data.scamDetails}
+                getRiskColor={getRiskColor}
+              />
+            ) : (
+              <ScamDetailsSkeleton />
+            )}
+          </div>
+        </div>
 
         {/* Networks with Pagination */}
         {isLoading || isError ? (
