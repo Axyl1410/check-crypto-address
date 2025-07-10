@@ -8,10 +8,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { TextShimmer } from "@/components/ui/text-shimmer";
 import { useApi } from "@/hooks/use-api";
-import { ScamWalletsResponse } from "@/types";
+import { ScamWalletsResponse } from "@/types/scam-wallets";
 import { TokenIcon } from "@web3icons/react";
 import { formatDistance } from "date-fns";
-import { AlertTriangle, ListChecksIcon } from "lucide-react";
+import { AlertTriangle, ExternalLink, ListChecksIcon } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import Network from "./_component/network";
 import { ScamWalletsGridSkeleton } from "./_component/skeleton-cards";
@@ -49,11 +50,15 @@ export default function Page() {
                 updated database of fraudulent addresses.
               </p>
               <div className="flex gap-2">
-                <Input className="flex-1" placeholder="Search for a wallet" />
-                <Button>Search</Button>
+                <Input
+                  className="flex-1"
+                  placeholder="Search for a wallet"
+                  disabled
+                />
+                <Button disabled>Search</Button>
               </div>
             </div>
-            <div className="flex flex-col gap-2 rounded-tl bg-linear-to-tl from-white to-blue-100 p-6 lg:border-l-2 dark:from-slate-900 dark:to-slate-800">
+            <div className="flex flex-col gap-2 bg-linear-to-tl from-white to-blue-100 p-6 lg:border-l-2 dark:from-slate-900 dark:to-slate-800">
               <div className="flex gap-2">
                 <div className="bg-muted rounded border p-4">
                   <AlertTriangle size={24} />
@@ -162,6 +167,22 @@ export default function Page() {
                                   { addSuffix: true },
                                 )}
                               </span>
+                            </div>
+
+                            <div className="pt-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full gap-2"
+                                asChild
+                              >
+                                <Link
+                                  href={`/scam-wallets/${wallet.walletNetwork.symbol}/${wallet.address}`}
+                                >
+                                  <ExternalLink className="h-4 w-4" />
+                                  View Details
+                                </Link>
+                              </Button>
                             </div>
                           </div>
                         </CardContent>

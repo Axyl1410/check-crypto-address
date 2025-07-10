@@ -1,12 +1,16 @@
-import { ServerAxiosConfig } from "@/constants";
+import { ServerAxiosConfig } from "@/constants/axios-config";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(_request: NextRequest) {
+export async function GET(
+  _request: NextRequest,
+  { params }: { params: Promise<{ symbol: string; address: string }> },
+) {
   try {
+    const { symbol, address } = await params;
     const response = await fetch(
-      `${ServerAxiosConfig.baseURL}/scam-reports/networks`,
+      `${ServerAxiosConfig.baseURL}/scam-reports/${symbol}/${address}`,
       {
         headers: {
           "X-Api-Key": ServerAxiosConfig.headers["X-Api-Key"] || "",
@@ -20,6 +24,7 @@ export async function GET(_request: NextRequest) {
     }
 
     const data = await response.json();
+
     return NextResponse.json(data);
   } catch (error) {
     console.error("API route error:", error);

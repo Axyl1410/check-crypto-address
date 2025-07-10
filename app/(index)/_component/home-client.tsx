@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useApi } from "@/hooks/use-api";
-import { ValidateResponse } from "@/types";
+import { ValidateResponse } from "@/types/validate";
 import { validate } from "bitcoin-address-validation";
 import { isAddress } from "ethers";
 import {
@@ -20,14 +20,7 @@ import React from "react";
 import { toast } from "sonner";
 import NetworksCard from "./networks-card";
 import ScamDetailsCard from "./scam-details-card";
-import SecurityScoreCard from "./security-score-card";
-import {
-  NetworksSkeleton,
-  ScamDetailsSkeleton,
-  SecurityScoreSkeleton,
-  TransactionSkeleton,
-} from "./skeletons-cards";
-import TransactionCard from "./transaction-card";
+import { NetworksSkeleton, ScamDetailsSkeleton } from "./skeletons-cards";
 
 export default function HomeClient() {
   const [address, setAddress] = React.useState("");
@@ -173,10 +166,8 @@ export default function HomeClient() {
           </Alert>
         )}
 
-      {/* Results Section */}
       <div className="space-y-6">
-        {/* Security Score Overview */}
-        {isLoading || isError ? (
+        {/* {isLoading || isError ? (
           <SecurityScoreSkeleton />
         ) : data?.securityScore ? (
           <SecurityScoreCard
@@ -187,16 +178,15 @@ export default function HomeClient() {
           />
         ) : (
           <SecurityScoreSkeleton />
-        )}
+        )} */}
 
-        {/* Transaction Details */}
-        {isLoading || isError ? (
+        {/* {isLoading || isError ? (
           <TransactionSkeleton />
         ) : data?.securityScore ? (
           <TransactionCard securityScore={data.securityScore} />
         ) : (
           <TransactionSkeleton />
-        )}
+        )} */}
 
         {/* Scam Details */}
         {isLoading || isError ? (
