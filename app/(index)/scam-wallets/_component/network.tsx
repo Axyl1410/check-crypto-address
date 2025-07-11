@@ -1,7 +1,7 @@
 import Pagination from "@/components/common/pagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { useApi } from "@/hooks/use-api";
-import { ScamNetworkResponse } from "@/types";
+import { ScamNetworkResponse } from "@/types/scam-network";
 import { TokenIcon } from "@web3icons/react";
 import { NetworkListSkeleton } from "./skeleton-cards";
 

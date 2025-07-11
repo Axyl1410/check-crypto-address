@@ -21,12 +21,16 @@ export function ScamWalletCardSkeleton() {
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-6 w-6" />
             </div>
-            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full rounded p-2" />
           </div>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between text-sm">
             <Skeleton className="h-4 w-32" />
             <Skeleton className="h-4 w-20" />
+          </div>
+
+          <div className="pt-2">
+            <Skeleton className="h-9 w-full rounded" />
           </div>
         </div>
       </CardContent>
