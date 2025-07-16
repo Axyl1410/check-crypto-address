@@ -27,12 +27,13 @@ export default function Network() {
                 <Pagination
                   data={data.data}
                   itemsPerPage={10}
+                  hidePagination
                   render={(items) => (
                     <div className="space-y-2">
                       {items.map((item, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between rounded border p-2"
+                          className="flex items-center justify-between gap-2 rounded border p-2"
                         >
                           <div className="flex gap-2">
                             <TokenIcon
