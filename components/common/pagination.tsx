@@ -15,6 +15,7 @@ interface PaginationProps<T> {
   totalPages?: number;
   currentPage?: number;
   onPageChange?: (page: number) => void;
+  hidePagination?: boolean;
 }
 
 export default function Pagination<T>({
@@ -24,6 +25,7 @@ export default function Pagination<T>({
   totalPages: externalTotalPages,
   currentPage: externalCurrentPage,
   onPageChange,
+  hidePagination = false,
 }: PaginationProps<T>) {
   const [internalCurrentPage, setInternalCurrentPage] = React.useState(1);
 
@@ -63,13 +65,13 @@ export default function Pagination<T>({
       return [total - 4, total - 3, total - 2, total - 1, total];
     }
 
-    return [current - 2, current - 1, current, current + 1, current + 2];
+    return [1, current - 1, current, current + 1, total];
   }
 
   return (
     <div className="flex flex-col gap-2">
       {render(getCurrentPageData())}
-      {totalPages > 1 && (
+      {totalPages > 1 && !hidePagination && (
         <ShadcnPagination>
           <PaginationContent>
             <PaginationItem>

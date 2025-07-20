@@ -38,12 +38,25 @@ export function ScamWalletCardSkeleton() {
   );
 }
 
+export function PaginationSkeleton() {
+  return (
+    <div className="mt-4 flex justify-center gap-2">
+      {Array.from({ length: 5 }).map((_, idx) => (
+        <Skeleton key={idx} className="h-8 w-8 rounded" />
+      ))}
+    </div>
+  );
+}
+
 export function ScamWalletsGridSkeleton() {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 10 }).map((_, index) => (
-        <ScamWalletCardSkeleton key={index} />
-      ))}
+    <div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <ScamWalletCardSkeleton key={index} />
+        ))}
+      </div>
+      <PaginationSkeleton />
     </div>
   );
 }
