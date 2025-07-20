@@ -65,7 +65,7 @@ export default function Pagination<T>({
       return [total - 4, total - 3, total - 2, total - 1, total];
     }
 
-    return [current - 2, current - 1, current, current + 1, current + 2];
+    return [1, current - 1, current, current + 1, total];
   }
 
   return (
