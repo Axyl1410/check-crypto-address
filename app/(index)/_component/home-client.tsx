@@ -8,7 +8,14 @@ import { useApi } from "@/hooks/use-api";
 import { ValidateResponse } from "@/types/validate";
 import { validate } from "bitcoin-address-validation";
 import { isAddress } from "ethers";
-import { Activity, AlertCircleIcon, Wallet } from "lucide-react";
+import {
+  Activity,
+  AlertCircleIcon,
+  AlertTriangle,
+  ShieldAlert,
+  ShieldCheck,
+  Wallet,
+} from "lucide-react";
 import React, { useEffect } from "react";
 import { toast } from "sonner";
 import NetworksCard from "./networks-card";
@@ -62,15 +69,15 @@ export default function HomeClient() {
   }, [isError, error]);
 
   const getRiskColor = (riskLevel: string) => {
-    switch (riskLevel.toLowerCase()) {
-      case "low":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "medium":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "high":
-        return "bg-red-100 text-red-800 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+    const level = riskLevel.toLowerCase();
+    if (level.includes("low")) {
+      return "bg-green-100 text-green-800 border-green-200";
+    } else if (level.includes("medium")) {
+      return "bg-yellow-100 text-yellow-800 border-yellow-200";
+    } else if (level.includes("high")) {
+      return "bg-red-100 text-red-800 border-red-200";
+    } else {
+      return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
@@ -140,6 +147,49 @@ export default function HomeClient() {
         to someone. Always double check that you are sending/receiving funds to
         an existing address.
       </p>
+
+      {/* Risk Level Alert */}
+      {!isError &&
+        !isLoading &&
+        !isFetching &&
+        data?.securityScore?.riskLevel &&
+        (() => {
+          const level = data.securityScore.riskLevel.toLowerCase();
+          let content: {
+            icon: React.ReactNode;
+            title: string;
+            description: string;
+            variant?: "destructive" | undefined;
+          } = {
+            icon: <ShieldCheck className="h-5 w-5" />,
+            title: "Safe Wallet",
+            description:
+              "This wallet appears safe. No significant risks detected.",
+          };
+          if (level.includes("medium")) {
+            content = {
+              icon: <AlertTriangle className="h-5 w-5" />,
+              title: "Caution",
+              description:
+                "Some potential risks detected. Review details below before interacting.",
+            };
+          } else if (level.includes("high")) {
+            content = {
+              icon: <ShieldAlert className="h-5 w-5" />,
+              title: "Warning",
+              description:
+                "Warning: This wallet address has been flagged for suspicious activity. Please proceed with caution.",
+              variant: "destructive",
+            };
+          }
+          return (
+            <Alert variant={content.variant} className="glassmorphism mb-6">
+              {content.icon}
+              <AlertTitle>{content.title}</AlertTitle>
+              <AlertDescription>{content.description}</AlertDescription>
+            </Alert>
+          );
+        })()}
 
       {/* Error State */}
       {isError &&
