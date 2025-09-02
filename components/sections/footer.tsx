@@ -104,18 +104,18 @@ export default function FooterSection({
                     <div className="flex flex-col gap-1">
                       <p className="text-sm">Ethereum</p>
                       <p className="text-muted-foreground hidden text-xs sm:block">
-                        0x2349Db8bdf85bd80bFc4afb715a69fb4C6463B96
+                        0x0470E05E0685015436Dc92Efd06fc357f792384c
                       </p>
                       <p className="text-muted-foreground text-xs sm:hidden">
                         {formatAddress(
-                          "0x2349Db8bdf85bd80bFc4afb715a69fb4C6463B96",
+                          "0x0470E05E0685015436Dc92Efd06fc357f792384c",
                         )}
                       </p>
                     </div>
                   </div>
                   <div>
                     <CopyButton
-                      textToCopy="0x2349Db8bdf85bd80bFc4afb715a69fb4C6463B96"
+                      textToCopy="0x0470E05E0685015436Dc92Efd06fc357f792384c"
                       successMessage={{}}
                     />
                   </div>
